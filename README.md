@@ -50,12 +50,12 @@ The plugin provides a single `Patch` toolbox with five core operations:
 
 ```bash
 # Make a single edit
-llm -c prompt -m gpt-4o-mini "Change port 8080 to 3000 in config.txt" --tool Patch --ta
+llm prompt -m gpt-4o-mini "Change port 8080 to 3000 in config.txt" --tool Patch --ta
 ```
 
 ```bash
 # Make multiple edits
-llm -c prompt -m gpt-4o-mini "Add a smiley face to the first heading in README.md" --tool Patch --ta --chain-limit 0
+llm prompt -m gpt-4o-mini "Add a smiley face to the first heading in README.md, then a thank you emoji to the last heading" --tool Patch --ta --chain-limit 0
 ```
 
 ### Recommended Options
