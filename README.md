@@ -27,9 +27,9 @@ llm install .
 
 ## ⚠️ Security Warning
 
-**This plugin provides AI agents with direct file system access.** The tools can read, write, and modify any files that your user account can access. Before enabling this plugin:
+**This plugin provides AI agents with direct file system access.** The tools can read, write, and modify files within your current working directory. Before enabling this plugin:
 
-- Remember that AI agents can access files outside your current working directory
+- File access is restricted to the working directory where you run the `llm` command
 - Only use with trusted AI models and prompts
 - Use `--ta` (tool approval) mode - review all file operations carefully
 - Consider the potential impact if an AI agent modifies important files
