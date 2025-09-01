@@ -1,6 +1,6 @@
 [project]
 name = "llm-tools-patch"
-version = "0.1"
+version = "0.2"
 description = "LLM tools for reading, writing and changing text files"
 readme = "README.md"
 authors = [{name = "Danny O'Brien"}]
