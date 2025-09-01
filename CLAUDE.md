@@ -6,6 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with th
 
 `llm-tools-patch` is an LLM plugin that provides comprehensive text file manipulation tools through a unified `Patch` toolbox. The plugin is designed to give AI agents safe, controlled access to common file operations.
 
+LLM-friendly documentation for the llm API and command line usage is available here:
+https://github.com/simonw/docs-for-llms/blob/main/llm/0.27.1.txt (where 0.27.1
+is the version -- use the latest).
+
 ## Development Commands
 
 ### Environment Setup
@@ -18,7 +22,7 @@ source .venv/bin/activate  # Activate virtual environment
 ```bash
 llm install .       # Install plugin from current directory (not pip install)
 llm tools          # Verify plugin registration - should show Patch tools
-llm prompt "Read the README.md file" --tool Patch_patch_read README.md  # Test functionality
+llm prompt "Read the README.md file" --tool Patch README.md  # Test functionality
 ```
 
 ### Code Quality & Testing
@@ -90,23 +94,3 @@ All functions should:
 - Handle common exceptions (FileNotFoundError, PermissionError, UnicodeDecodeError)
 - Provide actionable error messages for users
 
-## Tool Usage Patterns
-
-### Safe File Reading
-Always use `patch_read()` or `patch_info()` before modifying files to understand their content and ensure accessibility.
-
-### Targeted Editing
-For precise changes, use `patch_edit()` with enough context in the search string to ensure uniqueness. Use `replace_all=True` only when intentionally replacing all occurrences.
-
-### Batch Operations  
-Use `patch_multi_edit()` for multiple related changes. Remember that edits are applied sequentially, so later edits operate on the results of earlier ones.
-
-### File Creation
-Use `patch_write()` to create new files or completely replace existing content. Parent directories are created automatically.
-
-## Plugin Integration
-
-The plugin registers with LLM using the entry point system:
-- `pyproject.toml` defines `llm_tools_patch = "llm_tools_patch"` entry point
-- `@llm.hookimpl` decorator on `register_tools()` function
-- Tools become available as `Patch_method_name` in LLM conversations
