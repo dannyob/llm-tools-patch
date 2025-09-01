@@ -56,3 +56,7 @@ To run tests:
 ```bash
 make test
 ```
+
+## Credits and Thanks
+
+Inspired by Claude Code's Read, Edit and MultiEdit tools.
