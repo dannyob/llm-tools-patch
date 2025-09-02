@@ -96,3 +96,5 @@ llm prompt "Read this README.md file" --tool Patch
 ## Credits and Thanks
 
 Inspired by Claude Code's Read, Edit and MultiEdit tools.
+
+Coded with Claude.
