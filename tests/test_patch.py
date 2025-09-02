@@ -4,7 +4,15 @@ import os
 import pytest
 from pathlib import Path
 
-from llm_tools_patch import Patch, patch_read, patch_write, patch_edit, patch_multi_edit, patch_info, _set_trusted_cwd_for_testing
+from llm_tools_patch import (
+    Patch,
+    patch_read,
+    patch_write,
+    patch_edit,
+    patch_multi_edit,
+    patch_info,
+    _set_trusted_cwd_for_testing,
+)
 
 
 @pytest.fixture
@@ -117,11 +125,11 @@ class TestPatchFunctions:
         test_file = in_tmp_path / "multi.txt"
         test_file.write_text("name = John\nage = 25\ncity = NYC")
 
-        edits_json = '''[
+        edits_json = """[
             {"old_string": "John", "new_string": "Jane"},
             {"old_string": "25", "new_string": "30"},
             {"old_string": "NYC", "new_string": "SF"}
-        ]'''
+        ]"""
 
         result = patch_multi_edit("multi.txt", edits_json)
         assert result.startswith("Successfully applied 3 edit")
@@ -148,10 +156,10 @@ class TestPatchFunctions:
         test_file = in_tmp_path / "multi.txt"
         test_file.write_text("hello world")
 
-        edits_json = '''[
+        edits_json = """[
             {"old_string": "world", "new_string": "universe"},
             {"old_string": "world", "new_string": "planet"}
-        ]'''
+        ]"""
 
         result = patch_multi_edit("multi.txt", edits_json)
         assert "Error in edit 2: String not found" in result
@@ -216,10 +224,10 @@ class TestPatchToolbox:
         test_file = in_tmp_path / "toolbox_multi.txt"
         test_file.write_text("config = debug\nport = 8080")
 
-        edits_json = '''[
+        edits_json = """[
             {"old_string": "debug", "new_string": "production"},
             {"old_string": "8080", "new_string": "3000"}
-        ]'''
+        ]"""
 
         result = self.patch.patch_multi_edit("toolbox_multi.txt", edits_json)
         assert result.startswith("Successfully applied 2 edit")
@@ -280,7 +288,7 @@ class TestEdgeCases:
         """Test with Unicode content."""
         test_file = in_tmp_path / "unicode.txt"
         unicode_content = "Hello 🌍! Testing unicode: café, naïve, résumé"
-        test_file.write_text(unicode_content, encoding='utf-8')
+        test_file.write_text(unicode_content, encoding="utf-8")
 
         result = patch_read("unicode.txt")
         assert result == unicode_content

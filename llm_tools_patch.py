@@ -47,7 +47,10 @@ def _validate_path_security(file_path: str) -> tuple[Path, str]:
         try:
             target_path.relative_to(trusted_cwd)
         except ValueError:
-            return None, f"Error: Access denied - '{file_path}' is outside initial working directory"
+            return (
+                None,
+                f"Error: Access denied - '{file_path}' is outside initial working directory",
+            )
 
         return target_path, None
 
@@ -57,6 +60,7 @@ def _validate_path_security(file_path: str) -> tuple[Path, str]:
 
 class EditOperation(BaseModel):
     """Represents a single edit operation."""
+
     old_string: str
     new_string: str
     replace_all: bool = False
@@ -83,7 +87,7 @@ def patch_read(file_path: str) -> str:
         if not path.is_file():
             return f"Error: '{file_path}' is not a file"
 
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, "r", encoding="utf-8") as f:
             content = f.read()
 
         return content
@@ -115,7 +119,7 @@ def patch_write(file_path: str, content: str) -> str:
         # Create parent directories if they don't exist
         path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(path, 'w', encoding='utf-8') as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(content)
 
         return f"Successfully wrote {len(content)} characters to '{file_path}'"
@@ -126,7 +130,9 @@ def patch_write(file_path: str, content: str) -> str:
         return f"Error writing to '{file_path}': {str(e)}"
 
 
-def patch_edit(file_path: str, old_string: str, new_string: str, replace_all: bool = False) -> str:
+def patch_edit(
+    file_path: str, old_string: str, new_string: str, replace_all: bool = False
+) -> str:
     """Make a single string replacement in a file.
 
     Args:
@@ -151,7 +157,7 @@ def patch_edit(file_path: str, old_string: str, new_string: str, replace_all: bo
             return f"Error: '{file_path}' is not a file"
 
         # Read current content
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, "r", encoding="utf-8") as f:
             content = f.read()
 
         # Check if old_string exists
@@ -171,7 +177,7 @@ def patch_edit(file_path: str, old_string: str, new_string: str, replace_all: bo
             replacements = 1
 
         # Write back
-        with open(path, 'w', encoding='utf-8') as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(new_content)
 
         return f"Successfully replaced {replacements} occurrence(s) in '{file_path}'"
@@ -232,22 +238,22 @@ def patch_multi_edit(file_path: str, edits_json: str) -> str:
                 edit = EditOperation(**edit_data)
                 edits.append(edit)
             except ValidationError as e:
-                return f"Error in edit {i+1}: {str(e)}"
+                return f"Error in edit {i + 1}: {str(e)}"
 
         # Read current content
-        with open(path, 'r', encoding='utf-8') as f:
+        with open(path, "r", encoding="utf-8") as f:
             content = f.read()
 
         # Apply edits sequentially
         for i, edit in enumerate(edits):
             if edit.old_string not in content:
-                return f"Error in edit {i+1}: String not found after previous edits"
+                return f"Error in edit {i + 1}: String not found after previous edits"
 
             if not edit.replace_all and content.count(edit.old_string) > 1:
-                return f"Error in edit {i+1}: String appears {content.count(edit.old_string)} times. Use replace_all=true or provide more context"
+                return f"Error in edit {i + 1}: String appears {content.count(edit.old_string)} times. Use replace_all=true or provide more context"
 
             if edit.old_string == edit.new_string:
-                return f"Error in edit {i+1}: old_string and new_string are identical"
+                return f"Error in edit {i + 1}: old_string and new_string are identical"
 
             # Apply the edit
             if edit.replace_all:
@@ -256,7 +262,7 @@ def patch_multi_edit(file_path: str, edits_json: str) -> str:
                 content = content.replace(edit.old_string, edit.new_string, 1)
 
         # Write back the final result
-        with open(path, 'w', encoding='utf-8') as f:
+        with open(path, "w", encoding="utf-8") as f:
             f.write(content)
 
         total_edits = len(edits)
@@ -300,7 +306,7 @@ def patch_info(file_path: str) -> str:
         if path.is_file():
             # Try to determine if it's a text file
             try:
-                with open(path, 'r', encoding='utf-8') as f:
+                with open(path, "r", encoding="utf-8") as f:
                     f.read(100)  # Try to read first 100 chars
                 info += "Encoding: Text (UTF-8 compatible)\n"
             except UnicodeDecodeError:
@@ -375,7 +381,13 @@ class Patch(llm.Toolbox):
         """
         return patch_write(file_path, content)
 
-    def patch_edit(self, file_path: str, old_string: str, new_string: str, replace_all: bool = False) -> str:
+    def patch_edit(
+        self,
+        file_path: str,
+        old_string: str,
+        new_string: str,
+        replace_all: bool = False,
+    ) -> str:
         """Make a single string replacement in a file.
 
         Finds exact string matches and replaces them. By default requires the match
