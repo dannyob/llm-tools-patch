@@ -3,7 +3,7 @@ name = "llm-tools-patch"
 version = "0.2"
 description = "LLM tools for reading, writing and changing text files"
 readme = "README.md"
-authors = [{name = "Danny O'Brien"}]
+authors = [{name = "Danny O'Brien", email = "danny@spesh.com"}]
 license = "Apache-2.0"
 classifiers = []
 requires-python = ">=3.9"
