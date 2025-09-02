@@ -41,7 +41,13 @@ format: ## Format code (install ruff if needed)
 	source .venv/bin/activate && $(UV) pip install ruff
 	source .venv/bin/activate && ruff format .
 
-check: lint test ## Run linting and tests
+lint-fix:
+	source .venv/bin/activate && $(UV) pip install ruff
+	source .venv/bin/activate && ruff check . --fix
+
+check: lint format test
+
+check-fix: lint-fix format test
 
 # Build and distribution
 clean: ## Clean build artifacts and cache files
