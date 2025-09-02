@@ -5,7 +5,7 @@
 [![Tests](https://github.com/dannyob/llm-tools-patch/actions/workflows/test.yml/badge.svg)](https://github.com/dannyob/llm-tools-patch/actions/workflows/test.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/dannyob/llm-tools-patch/blob/main/LICENSE)
 
-LLM plugin providing comprehensive text file manipulation, including reading, writing, and edits.
+LLM plugin for Simon Willison's `llm` providing text file manipulation, including reading, writing, and edits.
 
 ## Installation
 
